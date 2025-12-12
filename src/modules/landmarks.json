@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Chemical Engineering Computer Lab",
+        "description": "All of the computers in here have any programs a chemical engineer might need for their assignments.",
+        "x": 15.3,
+        "y": 40.8
+    },
+    {
+        "name": "Unit Ops Lab",
+        "description": "This is where some of the upper division undergraduate labs take place.",
+        "x": 8.0,
+        "y": 12.5
+    },
+    {
+        "name": "East Atrium",
+        "description": "This is a great open area for studying and doing homework.",
+        "x": 3.2,
+        "y": -4.9
+    }
+]
