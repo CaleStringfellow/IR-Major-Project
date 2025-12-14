@@ -1,0 +1,32 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="paused" default="false"/>
+  <arg name="gui" default="true"/>
+
+  <!-- Use simulation time -->
+  <param name="use_sim_time" value="true"/>
+
+  <!-- Start Gazebo -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name"
+         value="$(find cs4023major_project)/worlds/sec_room_hall.world"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="use_sim_time" value="true"/>
+  </include>
+
+  <!-- Load TurtleBot3 -->
+  <param name="robot_description"
+         command="$(find xacro)/xacro $(find turtlebot3_description)/urdf/turtlebot3_burger.urdf.xacro"/>
+
+  <!-- Spawn TurtleBot3 -->
+  <node name="spawn_turtlebot"
+        pkg="gazebo_ros"
+        type="spawn_model"
+        output="screen"
+        args="-urdf -param robot_description -model turtlebot"/>
+
+  <!-- Start TurtleBot3 navigation stack -->
+  <include file="$(find turtlebot3_navigation)/launch/turtlebot3_navigation.launch"/>
+</launch>
+

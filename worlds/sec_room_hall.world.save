@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="sec_world">
+
+    <!-- Lighting + ground -->
+    <include><uri>model://sun</uri></include>
+    <include><uri>model://ground_plane</uri></include>
+
+    <!-- ROOM -->
+    <model name="room_west">
+      <static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>0.10 3.048 2.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.10 3.048 2.5</size></box></geometry></visual>
+        <pose>-2.286 0 1.25 0 0 0</pose>
+      </link>
+    </model>
+
+    <model name="room_east">
+      <static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>0.10 3.048 2.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.10 3.048 2.5</size></box></geometry></visual>
+        <pose>2.286 0 1.25 0 0 0</pose>
+      </link>
+    </model>
+
+    <model name="room_south">
+      <static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>4.572 0.10 2.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>4.572 0.10 2.5</size></box></geometry></visual>
+        <pose>0 -1.524 1.25 0 0 0</pose>
+      </link>
+    </model>
+
+    <!-- North wall -->
+    <model name="room_north_left">
+      <static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>1.524 0.10 2.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.524 0.10 2.5</size></box></geometry></visual>
+        <pose>-1.524 1.524 1.25 0 0 0</pose>
+      </link>
+    </model>
+    <model name="room_north_right">
+      <static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>1.524 0.10 2.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.524 0.10 2.5</size></box></geometry></visual>
+        <pose>1.524 1.524 1.25 0 0 0</pose>
+      </link>
+    </model>
+
+   
+
+    <!-- East outer wall -->
+    <model name="hall_east_outer">
+      <static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>0.10 6.096 2.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.10 6.096 2.5</size></box></geometry></visual>
+        <pose>-0.5 3.0 1.25 0 0 1.5708</pose>
+      </link>
+    </model>
+
+    <!-- North inner wall -->
+    <model name="hall_north_inner_left">
+      <static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>2.286 0.10 2.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>2.286 0.10 2.5</size></box></geometry></visual>
+        <pose>2.286 2.5 1.25 0 0 1.5708</pose>
+      </link>
+    </model>
+    
+
+    <!-- North outer wall -->
+    <model name="hall_north_outer">
+      <static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>0.10 4.572 2.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.10 4.572 2.5</size></box></geometry></visual>
+        <pose>-3.7 0.7 1.25 0 0 0</pose>
+      </link>
+    </model>
+
+   
+
+    <!-- === Robot === -->
+    <include>
+      <uri>model://turtlebot</uri>
+      <name>turtlebot</name>
+      <pose>0 0 0.01 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>
+
+

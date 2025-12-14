@@ -1,0 +1,25 @@
+<launch>
+  <arg name="paused" default="false"/>
+  <arg name="gui" default="true"/>
+
+
+  <!-- Start Gazebo ONCE with your custom world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name"
+         value="$(find cs4023major_project)/worlds/sec_room_hall.world"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="use_sim_time" value="true"/>
+  </include>
+
+  <!-- Spawn TurtleBot model (does NOT start Gazebo) -->
+  <node name="spawn_turtlebot"
+        pkg="gazebo_ros"
+        type="spawn_model"
+        output="screen"
+        args="-database turtlebot -model turtlebot"/>
+
+  <!-- Start navigation stack -->
+  <include file="$(find turtlebot_navigation)/launch/amcl_demo.launch"/>
+</launch>
+
