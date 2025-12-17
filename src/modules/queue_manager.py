@@ -1,10 +1,12 @@
 # Python 2.7
+import rospy
 
 class QueueManager(object):
     def __init__(self):
         self.queue = []
         self.robot_pose = None
-        self.minutes_per_person = 5
+        # Configurable via ROS parameter, defaults to 5 minutes per person
+        self.minutes_per_person = rospy.get_param("~queue_minutes_per_person", 5)
 
     def update_robot_pose(self, pose):
         self.robot_pose = pose
@@ -38,4 +40,5 @@ class QueueManager(object):
             self.queue.pop(0)
             return "You have left the queue."
         return "Queue is empty."
+
 

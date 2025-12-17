@@ -31,11 +31,24 @@ class NavInterface(object):
         if status == 3:  # SUCCEEDED
             self._goal_reached = True
             rospy.loginfo("Navigation goal reached.")
+        elif status == 4:  # ABORTED
+            rospy.logwarn("Navigation goal aborted (likely unreachable or blocked).")
+        elif status == 5:  # REJECTED
+            rospy.logwarn("Navigation goal rejected.")
+        elif status == 8:  # PREEMPTED
+            rospy.loginfo("Navigation goal preempted.")
+        else:
+            rospy.logwarn("Navigation goal status: %d", status)
 
     def send_goal(self, x, y, yaw=0.0):
         """
         Send a navigation goal in the map.
+        Args:
+            x: X coordinate in map frame
+            y: Y coordinate in map frame
+            yaw: Orientation angle in radians (default: 0.0)
         """
+        import math
 
         goal = PoseStamped()
         goal.header.stamp = rospy.Time.now()
@@ -45,16 +58,18 @@ class NavInterface(object):
         goal.pose.position.y = y
         goal.pose.position.z = 0.0
 
+        # Convert yaw to quaternion
         goal.pose.orientation.x = 0.0
         goal.pose.orientation.y = 0.0
-        goal.pose.orientation.z = 0.0
-        goal.pose.orientation.w = 1.0
+        goal.pose.orientation.z = math.sin(yaw / 2.0)
+        goal.pose.orientation.w = math.cos(yaw / 2.0)
 
         self._goal_reached = False
         self.goal_pub.publish(goal)
 
-        rospy.loginfo("Sent navigation goal: x=%s, y=%s", x, y)
+        rospy.loginfo("Sent navigation goal: x=%.2f, y=%.2f, yaw=%.2f", x, y, yaw)
 
     def goal_reached(self):
         return self._goal_reached
+
 

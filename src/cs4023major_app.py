@@ -77,11 +77,8 @@ class ApplicationCore(object):
         if lm:
             self.landmark_pub.publish(str(lm))
 
+        # Store the Pose object, not the Odometry message
         self.queue_manager.update_robot_pose(pose)
-
-
-        # Queue system might also need robot pose later (for ETA)
-        self.queue_manager.update_robot_pose(msg)
 
     def cb_user_command(self, msg):
         """Handles external commands such as:
@@ -96,9 +93,14 @@ class ApplicationCore(object):
             nearest = None
 
             if self.queue_manager.robot_pose is not None:
-                nearest = self.landmarks.get_landmarks_near(
-                    self.queue_manager.robot_pose
-                )
+                try:
+                    nearest = self.landmarks.get_landmarks_near(
+                        self.queue_manager.robot_pose
+                    )
+                except AttributeError:
+                    # Handle case where robot_pose might be wrong type
+                    rospy.logwarn("Robot pose not in correct format, skipping landmark detection")
+                    nearest = None
 
             eta, location = self.queue_manager.add_person(nearest)
 
@@ -143,4 +145,5 @@ class ApplicationCore(object):
 if __name__ == "__main__":
     app = ApplicationCore()
     app.spin()
+
 

@@ -1,0 +1,51 @@
+<launch>
+  <!-- Test Launch File for TurtleBot2 - Works without physical robot -->
+  <!-- Use real time, not simulation time -->
+  <param name="use_sim_time" value="false"/>
+
+  <!-- Arguments for configuration -->
+  <arg name="use_map" default="false"/>
+  <arg name="map_file" default="$(find cs4023major_project)/maps/demo_map.yaml"/>
+
+
+
+  <!-- Fake odometry publisher for testing without robot -->
+  <node name="fake_odom" pkg="tf" type="static_transform_publisher" 
+        args="0 0 0 0 0 0 odom base_footprint 100" />
+  
+  <!-- Publish fake odometry messages -->
+  <node name="fake_odom_publisher" pkg="cs4023major_project" type="fake_odom.py" 
+        output="screen" />
+
+
+  <group if="$(arg use_map)">
+    <node name="map_server" pkg="map_server" type="map_server" 
+          args="$(arg map_file)" output="screen">
+      <param name="frame_id" value="map"/>
+    </node>
+
+    
+    <include file="$(find turtlebot_navigation)/launch/includes/amcl/amcl.launch.xml">
+      <arg name="scan_topic" value="/scan" />
+      <arg name="initial_pose_x" value="0.0"/>
+      <arg name="initial_pose_y" value="0.0"/>
+      <arg name="initial_pose_a" value="0.0"/>
+    </include>
+  </group>
+
+  
+  <!-- Uncomment when you have a map -->
+  <!--
+  <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml"/>
+  -->
+
+  <!-- -->
+  <node
+    pkg="cs4023major_project"
+    type="cs4023major_app.py"
+    name="cs4023_application_core"
+    output="screen" />
+
+</launch>
+
+
