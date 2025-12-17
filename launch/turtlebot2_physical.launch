@@ -1,0 +1,48 @@
+<launch>
+  <param name="use_sim_time" value="false"/>
+
+  <!-- Arguments for configuration -->
+  <arg name="map_file" default="$(find cs4023major_project)/maps/demo_map.yaml"/>
+  <arg name="use_map" default="true"/>
+  <arg name="initial_pose_x" default="0.0"/>
+  <arg name="initial_pose_y" default="0.0"/>
+  <arg name="initial_pose_a" default="0.0"/>
+
+  <!-- TurtleBot2 Bringup - Brings up base, sensors, etc. -->
+  <include file="$(find turtlebot_bringup)/launch/minimal.launch"/>
+
+  <!-- 3D Sensor (Kinect/Xtion) - Uncomment if you have one -->
+  <include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+    <arg name="rgb_processing" value="false" />
+    <arg name="depth_registration" value="false" />
+    <arg name="depth_processing" value="false" />
+    <arg name="scan_topic" value="/scan" />
+  </include>
+
+
+  <group if="$(arg use_map)">
+    <node name="map_server" pkg="map_server" type="map_server" 
+          args="$(arg map_file)" output="screen">
+      <param name="frame_id" value="map"/>
+    </node>
+
+    <include file="$(find turtlebot_navigation)/launch/includes/amcl/amcl.launch.xml">
+      <arg name="scan_topic" value="/scan" />
+      <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+      <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+      <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+    </include>
+  </group>
+
+  <!-- Move Base Navigation -->
+  <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml"/>
+
+  <node
+    pkg="cs4023major_project"
+    type="cs4023major_app.py"
+    name="cs4023_application_core"
+    output="screen" />
+
+</launch>
+
+

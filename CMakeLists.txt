@@ -156,7 +156,9 @@ include_directories(
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
 catkin_install_python(
-    PROGRAMS src/cs4023major_app.py
+    PROGRAMS 
+        src/cs4023major_app.py
+        src/fake_odom.py
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -200,3 +202,4 @@ catkin_install_python(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
