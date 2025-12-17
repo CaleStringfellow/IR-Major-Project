@@ -1,27 +1,41 @@
-# Python 2.7 (PLACEHOLDER)
+# Python 2.7
 
 class QueueManager(object):
     def __init__(self):
         self.queue = []
         self.robot_pose = None
+        self.minutes_per_person = 5
 
     def update_robot_pose(self, pose):
         self.robot_pose = pose
 
-    def add_person(self):
-        # (PLACEHOLDER) ETA calculation
+    def _eta_for_position(self, pos):
+        return pos * self.minutes_per_person
+
+    def add_person(self, nearest_landmark=None):
         position = len(self.queue) + 1
-        eta = position * 5  # 5 minutes per tour placeholder
-        wait_location = "Lobby"
         self.queue.append(position)
+
+        eta = self._eta_for_position(position)
+
+        if nearest_landmark:
+            wait_location = nearest_landmark["name"]
+        else:
+            wait_location = "Main Lobby"
+
         return eta, wait_location
 
     def status(self):
-        return "Queue length: %d" % len(self.queue)
+        count = len(self.queue)
+        eta = self._eta_for_position(count) if count > 0 else 0
+
+        return "People in queue: %d | Estimated wait: %d minutes" % (
+            count, eta
+        )
 
     def cancel(self):
         if self.queue:
             self.queue.pop(0)
-            return "Removed first person in line."
-        return "Queue empty."
+            return "You have left the queue."
+        return "Queue is empty."
 

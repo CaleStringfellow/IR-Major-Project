@@ -85,13 +85,7 @@
 
    
 
-    <!-- === Robot === -->
-    <include>
-      <uri>model://turtlebot</uri>
-      <name>turtlebot</name>
-      <pose>0 0 0.01 0 0 0</pose>
-    </include>
-
+  
   </world>
 </sdf>
 
